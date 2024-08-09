@@ -1,0 +1,67 @@
+{
+  "n": "",
+  "d": [
+    {
+      "n": "Folder 1",
+      "d": [
+        {
+          "n": "Subfolder 1a",
+          "d": [],
+          "f": [
+            {
+              "n": "Hello World.txt",
+              "t": "2021-02-18T21:54:42.123Z",
+              "s": 5,
+              "h": "",
+              "b": "ab/cdefg0123456789",
+              "k": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+            }
+          ]
+        },
+        {
+          "n": "Subfolder 2a",
+          "d": [
+            {
+              "n": "Subfolder 2a-1",
+              "d": [],
+              "f": []
+            },
+            {
+              "n": "Subfolder 2a-2",
+              "d": [],
+              "f": []
+            }
+          ],
+          "f": [
+            {
+              "n": "Hello World.txt",
+              "t": "2022-02-18T21:54:42.123Z",
+              "s": 5,
+              "h": "",
+              "b": "ab/cdefg0123456789",
+              "k": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+            },
+            {
+              "n": "Hallo Welt.txt",
+              "t": "2022-02-18T21:54:42.123Z",
+              "s": 5,
+              "h": "",
+              "b": "ab/hijklm0123456789",
+              "k": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+            },
+            {
+              "n": "Bonjour le monde.txt",
+              "t": "2022-02-18T21:54:42.123Z",
+              "s": 5,
+              "h": "",
+              "b": "ab/nopqr0123456789",
+              "k": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+            }
+          ]
+        }
+      ],
+      "f": []
+    }
+  ],
+  "f": []
+}

@@ -1,0 +1,19 @@
+@import url(theme.css);
+@import 'material-symbols/outlined.css';
+
+
+*,
+:before,
+:after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--md-ref-typeface-plain);
+}
+
+body {
+  background-color: var(--md-sys-color-background);
+  color: var(--md-sys-color-on-background);
+  margin: 0;
+}

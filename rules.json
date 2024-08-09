@@ -1,0 +1,15 @@
+[
+    {
+        \"corsRuleName\": \"web-read-access\",
+        \"allowedOrigins\": [
+            \"*\"
+    ],
+        \"allowedHeaders\": [
+            \"*\"
+],
+        \"allowedOperations\": [
+            \"s3_get\"
+],
+        \"maxAgeSeconds\": 3600
+}
+]

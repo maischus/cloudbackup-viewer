@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CloudBackup</title>
+  <link rel="stylesheet" href="../src/ui/css/index.css" />
+  <style>
+    body {
+      display: flex;
+    }
+
+    header {
+      display: grid;
+      align-items: center;
+      grid-template-columns: 1fr 1fr;
+      background: var(--grape-0);
+    }
+
+    .hero {
+      padding: var(--size-10);
+      display: grid;
+      gap: var(--size-5);
+    }
+
+    .hero-message {
+      display: grid;
+      grid-template-columns: max-content;
+      color: var(--gray-9);
+      line-height: var(--font-lineheight-0);
+    }
+
+    .hero-message>div:last-child {
+      color: var(--indigo-7);
+    }
+
+    .under-hero {
+      color: var(--gray-7);
+      font-size: var(--font-size-4);
+      margin-block-end: var(--size-3);
+    }
+
+    .button-list {
+      display: flex;
+      gap: var(--size-3);
+    }
+
+    button {
+      background: white;
+      color: var(--indigo-8);
+      font-size: var(--font-size-3);
+      padding-inline: var(--size-8);
+      padding-block: var(--size-3);
+      border-radius: var(--radius-2);
+      box-shadow: var(--shadow-2);
+    }
+
+    button.primary {
+      background: var(--indigo-8);
+      text-shadow: 0 1px 0 var(--indigo-9);
+      color: white;
+    }
+
+    button.primary:hover {
+      background: var(--indigo-7);
+    }
+
+    .promo-art {
+      align-self: stretch;
+    }
+
+    .promo-art>img {
+      block-size: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>CloudBackup</h1>
+    <nav>
+      <ul>
+        <li>About</li>
+        <li>Getting started</li>
+        <li>Download</li>
+      </ul>
+    </nav>
+
+    <section class="hero">
+      <h1 class="hero-message">
+        <div>Hero layout with</div>
+        <div>Open Props</div>
+      </h1>
+      <p class="under-hero">Lorem ipsum dolor sit amet consectetu adipisicing elit. Nemo in doloremque quam,
+        voluptatibus eum voluptatum.</p>
+      <div class="button-list">
+        <button class="primary">Get started</button>
+        <button>Live demo</button>
+      </div>
+    </section>
+    <picture class="promo-art">
+      <img src="https://doodleipsum.com/700x700/outline?bg=3b5bdb" height="800" width="800" alt="a random doodle">
+    </picture>
+  </header>
+  <p><a href="app/">App</a></p>
+</body>
+
+</html>

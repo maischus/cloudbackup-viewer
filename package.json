@@ -1,0 +1,28 @@
+{
+  "name": "cloudbackup-viewer",
+  "version": "0.0.1",
+  "description": "Web-Viewer for CloudBackup",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "author": "Markus Kimmerle",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.624.0",
+    "@lit/context": "^1.1.2",
+    "@material/web": "^2.0.0",
+    "lit": "^3.2.0",
+    "material-symbols": "^0.21.3",
+    "open-props": "^1.7.5",
+    "valibot": "^0.37.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "express": "^4.19.2",
+    "typescript": "^5.5.4",
+    "vite": "^5.3.5"
+  }
+}

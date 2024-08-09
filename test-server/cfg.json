@@ -1,0 +1,11 @@
+{
+  "localPath": "A:/Share",
+  "key": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+  "storage": {
+    "key": "my-key",
+    "secret": "my-secret",
+    "endpoint": "http://localhost:5173/s3/",
+    "bucket": "my-test-bucket",
+    "forcePathStyle": true
+  }
+}
