@@ -1,4 +1,5 @@
 import { defineConfig, PluginOption, PreviewServer, ViteDevServer } from "vite";
+import { resolve } from "path";
 import express from "express";
 import { testServer } from "./test-server/server";
 import * as child from "child_process";
@@ -22,6 +23,14 @@ function expressPlugin(): PluginOption {
 }
 
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        app: resolve(__dirname, 'app/index.html'),
+      },
+    },
+  },
   define: {
     __APP_VERSION__: JSON.stringify(packageConfig.version),
     __COMMIT_HASH__: JSON.stringify(commitHash),
