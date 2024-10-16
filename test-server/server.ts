@@ -3,8 +3,8 @@ import * as fs from "fs";
 import * as v from "valibot";
 import { ConfigSchema } from "../src/core/cloudbackup";
 import * as crypto from "crypto";
-import { base64ToBytes } from "../src/core/base64";
-import { compress } from "../src/core/compression";
+import { base64ToBytes } from "../src/core/utilities/base64";
+import { compress } from "../src/core/utilities/compression";
 
 export const testServer = express();
 

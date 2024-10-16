@@ -36,12 +36,9 @@ export class App extends LitElement {
       inset-block-start: 0;
       padding-block-start: 5vh;
       gap: 10px;
-
-      
     }
 
     output {
-        
         background-color: var(--red-7);
         color: var(--gray-3);
         max-inline-size: min(25ch, 90vw);
@@ -52,7 +49,6 @@ export class App extends LitElement {
         box-shadow: var(--shadow-5);
         cursor: pointer;
         animation: slide-in 1s;
-       
       }
 
     @keyframes slide-in {
@@ -91,7 +87,8 @@ export class App extends LitElement {
       ${this._notifications.map((notification, idx) => html`<output role="status" data-idx="${idx}" @click=${this._closeNotification}>${notification.error}</output>`)}
     </div>
     <config-selector></config-selector>
-    <snapshot-viewer style="display: none"></snapshot-viewer>`;
+    <snapshot-viewer style="display: none"></snapshot-viewer>
+    `;
   }
 
   private _closeNotification(evt: PointerEvent) {

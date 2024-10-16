@@ -1,8 +1,8 @@
 import * as v from "valibot";
-import { base64ToBytes } from "./base64";
+import { base64ToBytes } from "./utilities/base64";
 import { AwsS3, OptionsSchema } from "./cloudfs/awss3";
-import { decompress } from "./compression";
-import { decrypt } from "./crypto";
+import { decompress } from "./utilities/compression";
+import { decrypt, importKey } from "./crypto";
 import { Folder, FolderSchema } from "./snapshot";
 import { SnapshotList, SnapshotListSchema } from "./snapshotlist";
 
@@ -20,25 +20,13 @@ export class Cloudbackup {
   private _snapshotList: SnapshotList | null = null;
   private _snapshots = new Map<string, Folder | null>();
 
-  loadWithConfig(configFile: File) {
+  loadConfigFromFile(configFile: File) {
     return new Promise<void>((resolve, reject) => {
-      const snapshotListFile = "s/list.json";
-      let config: Config;
-
       const reader = new FileReader();
       reader.onload = async () => {
         try {
-          config = v.parse(ConfigSchema, JSON.parse(reader.result as string));
-
-          this._cloudStorage = new AwsS3(config.storage);
-
-          // snapshot list
-          const response = await this._cloudStorage.read(snapshotListFile);
-          const fileContent = await decrypt(base64ToBytes(config.key), response.buffer);
-          const decoder = new TextDecoder();
-          const str = decoder.decode(fileContent);
-          this._snapshotList = v.parse(SnapshotListSchema, JSON.parse(str));
-
+          const config = v.parse(ConfigSchema, JSON.parse(reader.result as string));
+          await this.loadSnapshotList(config);
           resolve();
         } catch (error) {
           reject(error);
@@ -46,6 +34,23 @@ export class Cloudbackup {
       };
       reader.readAsText(configFile);
     });
+  }
+
+  async loadConfigFromString(configString: string) {
+    const config = v.parse(ConfigSchema, JSON.parse(configString));
+    await this.loadSnapshotList(config);
+  }
+
+  private async loadSnapshotList(config: Config) {
+    const snapshotListFile = "s/list.json";
+    this._cloudStorage = new AwsS3(config.storage);
+
+    // snapshot list
+    const response = await this._cloudStorage.read(snapshotListFile);
+    const fileContent = await decrypt(await importKey(base64ToBytes(config.key)), response.buffer);
+    const decoder = new TextDecoder();
+    const str = decoder.decode(fileContent);
+    this._snapshotList = v.parse(SnapshotListSchema, JSON.parse(str));
   }
 
   getSnapshotList(): string[] {
@@ -73,7 +78,7 @@ export class Cloudbackup {
       }
 
       const response = await this._cloudStorage.read("s/" + snapshotInfo.file + ".json");
-      const fileContent = await decrypt(base64ToBytes(snapshotInfo.key), response.buffer);
+      const fileContent = await decrypt(await importKey(base64ToBytes(snapshotInfo.key)), response.buffer);
       const decompressed = await decompress(new Blob([fileContent]));
       const decoder = new TextDecoder();
       const str = decoder.decode(await decompressed.arrayBuffer());
@@ -94,7 +99,7 @@ export class Cloudbackup {
 
   async downloadFile(path: string, key: string): Promise<Blob> {
     const response = await this._cloudStorage.read("b/" + path);
-    const fileContent = await decrypt(base64ToBytes(key), response.buffer);
+    const fileContent = await decrypt(await importKey(base64ToBytes(key)), response.buffer);
     return new Blob([fileContent], { type: "application/octet-stream" });
   }
 }

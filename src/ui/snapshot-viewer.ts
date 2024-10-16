@@ -9,6 +9,8 @@ import "@material/web/button/text-button";
 import { CryptoFile, Folder } from '../core/snapshot';
 import { Cloudbackup, cloudbackupContext } from '../core/cloudbackup-context';
 import { NotificationEvent } from './notification-event';
+import { draftIcon, folderIcon, homeIcon, keyboardArrowRightIcon, topicIcon } from './icons';
+import { downloadBlobAsFile } from '../core/utilities/download';
 
 @customElement("snapshot-viewer")
 export class SnapshotViewer extends LitElement {
@@ -53,7 +55,7 @@ export class SnapshotViewer extends LitElement {
 
   private _snapshotList() {
     return html`
-      ${this.cloudbackup.getSnapshotList().map(snapshot => html`<md-list-item type="link" href="#${snapshot}:"><md-icon slot="start">topic</md-icon>${snapshot}</md-list-item>`)}
+      ${this.cloudbackup.getSnapshotList().map(snapshot => html`<md-list-item type="link" href="#${snapshot}:">${topicIcon}${snapshot}</md-list-item>`)}
     `;
   }
 
@@ -61,8 +63,8 @@ export class SnapshotViewer extends LitElement {
     try {
       const folder = await this.cloudbackup.getFolder(this.snapshot, this.path);
       return html`
-        ${folder.d?.map((folder: Folder) => html`<md-list-item type="link" href="#${this._fullPath(folder.n)}"><md-icon slot="start">folder</md-icon>${folder.n}</md-list-item>`)}
-        ${folder.f?.map((file: CryptoFile) => html`<md-list-item type="button" href="#${this._fullPath(file.n)}" @click="${(evt: PointerEvent) => this._downloadFile(evt)}" data-filename="${file.n}" data-key="${file.k}" data-blob="${file.b}"><md-icon slot="start">draft</md-icon><div slot="headline">${file.n}</div><div slot="supporting-text">${this._formatFileSize(file.s)} - ${new Date(file.t).toLocaleString()}</div></md-list-item>`)}
+        ${folder.d?.map((folder: Folder) => html`<md-list-item type="link" href="#${this._fullPath(folder.n)}">${folderIcon}${folder.n}</md-list-item>`)}
+        ${folder.f?.map((file: CryptoFile) => html`<md-list-item type="button" href="#${this._fullPath(file.n)}" @click="${(evt: PointerEvent) => this._downloadFile(evt)}" data-filename="${file.n}" data-key="${file.k}" data-blob="${file.b}">${draftIcon}<div slot="headline">${file.n}</div><div slot="supporting-text">${this._formatFileSize(file.s)} - ${new Date(file.t).toLocaleString()}</div></md-list-item>`)}
       `;
     } catch (error) {
       const notification = new NotificationEvent(error);
@@ -92,9 +94,9 @@ export class SnapshotViewer extends LitElement {
     const crumbs = path === "" ? [] : path.split("/");
 
     return html`<div id="breadcrumbs" style="display:flex; align-items: center;">
-      <md-text-button href="#"><md-icon>home</md-icon></md-text-button>
-      ${snapshot !== "" ? html`<md-icon>keyboard_arrow_right</md-icon> <md-text-button href="#${snapshot}:">${snapshot}</md-text-button>` : nothing}
-      ${crumbs.map((crumb, i) => html` <md-icon>keyboard_arrow_right</md-icon> <md-text-button href="#${snapshot}:${crumbs.slice(0, i + 1).join("/")}">${crumb}</md-text-button>`)}
+      <md-text-button href="#">${homeIcon}</md-text-button>
+      ${snapshot !== "" ? html`${keyboardArrowRightIcon} <md-text-button href="#${snapshot}:">${snapshot}</md-text-button>` : nothing}
+      ${crumbs.map((crumb, i) => html` ${keyboardArrowRightIcon} <md-text-button href="#${snapshot}:${crumbs.slice(0, i + 1).join("/")}">${crumb}</md-text-button>`)}
     </div>`;
   }
 
@@ -103,12 +105,7 @@ export class SnapshotViewer extends LitElement {
     const target = evt.currentTarget as MdListItem;
     try {
       const blob = await this.cloudbackup.downloadFile(target.dataset.blob, target.dataset.key);
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.download = target.dataset.filename;
-      link.href = url;
-      link.click();
-      window.URL.revokeObjectURL(url);
+      downloadBlobAsFile(blob, target.dataset.filename);
     } catch (error) {
       const notification = new NotificationEvent(error);
       notification.toErrorConsole();
