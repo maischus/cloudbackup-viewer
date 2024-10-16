@@ -87,7 +87,7 @@ export class ConfigSelector extends LitElement {
   }
 
   private _renderQrDetectorDialog() {
-    return html`<md-dialog @close=${(e: Event) => {
+    return html`<md-dialog @close=${(_: Event) => {
       this._barcodeDetector.stopDetection();
     }}>
       <div slot="headline">QR Scanner</div>
