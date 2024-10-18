@@ -13,15 +13,8 @@ import { NotificationEvent } from './ui/notification-event';
 export class App extends LitElement {
 
   static styles = css`
-    header {
-      background-color: var(--md-sys-color-surface);
-      padding: var(--size-fluid-2);
-      margin-block-end: var(--size-fluid-2);
-
-      & h1 {
-        font-family: var(--md-ref-typeface-brand);
-        margin: 0;
-      }
+    :host {
+      display: block;
     }
 
     config-selector, snapshot-viewer {
@@ -82,7 +75,6 @@ export class App extends LitElement {
 
   render() {
     return html`
-    <header><h1>CloudBackup Viewer</h1></header>
     <div id="notification-container">
       ${this._notifications.map((notification, idx) => html`<output role="status" data-idx="${idx}" @click=${this._closeNotification}>${notification.error}</output>`)}
     </div>

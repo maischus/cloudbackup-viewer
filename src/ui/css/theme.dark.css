@@ -1,7 +1,7 @@
 @import "open-props/style";
 
 :root {
-	--md-sys-color-primary: orange;
+	--md-sys-color-primary: var(--orange-5);
 	--md-sys-color-background: var(--gray-9);
 	--md-sys-color-on-background: var(--gray-0);
 	--md-sys-color-surface: var(--gray-8);

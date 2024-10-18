@@ -1,19 +1,56 @@
 @import url(theme.css);
 @import 'material-symbols/outlined.css';
 
+:root {
+  --navbar-height: 4rem;
+}
 
 *,
-:before,
-:after {
+::after,
+::before {
   box-sizing: border-box;
 }
 
 html {
   font-family: var(--md-ref-typeface-plain);
+  scroll-padding-top: var(--navbar-height);
 }
 
 body {
   background-color: var(--md-sys-color-background);
   color: var(--md-sys-color-on-background);
   margin: 0;
+}
+
+header {
+  display: block;
+  width: 100%;
+  height: var(--navbar-height);
+  color: var(--gray-0);
+  position: fixed;
+  transition: all 400ms ease-in-out;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: var(--size-fluid-2);
+}
+
+header a {
+  text-decoration: none;
+  color: inherit;
+}
+
+header * {
+  display: inline;
+}
+
+nav ul {
+  display: flex;
+  gap: var(--size-fluid-3);
+}
+
+header.down {
+  color: var(--md-sys-color-on-background);
+  background-color: var(--md-sys-color-background);
+  box-shadow: var(--shadow-2);
 }

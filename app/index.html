@@ -6,9 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CloudBackup Viewer</title>
   <link rel="stylesheet" href="../src/ui/css/index.css" />
+  <style>
+    header {
+      display: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    cloudbackup-web {
+      margin-top: calc(var(--navbar-height) + var(--size-fluid-2));
+    }
+  </style>
 </head>
 
 <body>
+  <header class="down">
+    <h1>CloudBackup Viewer</h1>
+  </header>
   <cloudbackup-web></cloudbackup-web>
   <script src="../src/apps.ts" type="module"></script>
 </body>
