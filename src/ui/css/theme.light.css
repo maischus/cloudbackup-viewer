@@ -7,4 +7,7 @@
   --md-sys-color-surface: var(--gray-2);
   --md-sys-color-on-surface: var(--gray-7);
   --md-sys-color-on-surface-variant: var(--gray-6);
+
+  /* dialog background */
+  --md-sys-color-surface-container-high: var(--md-sys-color-surface);
 }

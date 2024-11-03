@@ -2,6 +2,8 @@ import { LitElement, css, html } from 'lit';
 import { customElement, query } from 'lit/decorators.js';
 import { consume } from '@lit/context';
 import '@material/web/dialog/dialog';
+import '@material/web/button/filled-button';
+import '@material/web/button/filled-tonal-button';
 import { MdDialog } from '@material/web/dialog/dialog';
 import { Cloudbackup, cloudbackupContext } from '../core/cloudbackup-context';
 import { SnapshotlistLoadedEvent } from '../core/snapshotlist-loaded-event';
@@ -10,14 +12,18 @@ import "./barcode-detector/barcode-detector";
 import { BarcodeDetectorUI } from './barcode-detector/barcode-detector';
 import { BarcodeDetectedEvent } from './barcode-detector/barcode-detected-event';
 import { cloudUploadIcon, qrCodeScannerIcon } from './icons';
+import { downloadBlobAsFile } from '../core/utilities/download';
 
 @customElement("config-selector")
 export class ConfigSelector extends LitElement {
   @consume({ context: cloudbackupContext })
   cloudbackup: Cloudbackup;
 
-  @query("md-dialog")
+  @query("#qr-detector-dialog")
   private _qrDetectorDialog: MdDialog;
+
+  @query("#download-config-dialog")
+  private _downloadConfigDialog: MdDialog;
 
   @query("barcode-detector")
   private _barcodeDetector: BarcodeDetectorUI;
@@ -77,6 +83,7 @@ export class ConfigSelector extends LitElement {
       <div>${qrCodeScannerIcon}</div>
     </div>
     ${this._renderQrDetectorDialog()}
+    ${this._renderDownloadConfigDialog()}
     `;
   }
 
@@ -87,7 +94,7 @@ export class ConfigSelector extends LitElement {
   }
 
   private _renderQrDetectorDialog() {
-    return html`<md-dialog @close=${(_: Event) => {
+    return html`<md-dialog id="qr-detector-dialog" @close=${(_: Event) => {
       this._barcodeDetector.stopDetection();
     }}>
       <div slot="headline">QR Scanner</div>
@@ -96,6 +103,24 @@ export class ConfigSelector extends LitElement {
       </form>
       <div slot="actions">
         
+      </div>
+    </md-dialog>`;
+  }
+
+  private _renderDownloadConfigDialog() {
+    return html`<md-dialog id="download-config-dialog" @close=${(_: Event) => {
+      this.dispatchEvent(new SnapshotlistLoadedEvent());
+    }}>
+      <div slot="headline">Download config</div>
+      <form slot="content" method="dialog">
+        Do you want to download to save the config file?
+      </form>
+      <div slot="actions">
+        <md-filled-tonal-button @click=${() => this._downloadConfigDialog.close()}>No</md-filled-tonal-button>
+        <md-filled-button @click=${() => {
+        downloadBlobAsFile(new Blob([this._downloadConfigDialog.dataset.config]), "config.json");
+        this._downloadConfigDialog.close();
+      }}>Yes</md-tonal-button>
       </div>
     </md-dialog>`;
   }
@@ -143,7 +168,8 @@ export class ConfigSelector extends LitElement {
       try {
         await this.cloudbackup.loadConfigFromString(evt.barcode.rawValue!);
         this._qrDetectorDialog.close();
-        this.dispatchEvent(new SnapshotlistLoadedEvent());
+        this._downloadConfigDialog.dataset.config = evt.barcode.rawValue!;
+        this._downloadConfigDialog.show();
       } catch (error) {
         console.log("Unrecongnized QR code", error);
       }
