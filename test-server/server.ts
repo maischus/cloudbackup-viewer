@@ -21,23 +21,28 @@ const encryptBuffer = (key: Uint8Array, data: Buffer) => {
   return Buffer.concat(buffers);
 };
 
-testServer.get("/s3/:file(\\S+)", async (req, res) => {
+const filePathFromUR = (pathname: string, prefix: string) => {
+  const url = new URL(pathname, "http://localhost");
+  if (!url.pathname.startsWith(prefix)) {
+    throw ("Prefix not found in pathname");
+  }
+  return url.pathname.substring(prefix.length);
+};
+
+testServer.get(/s3\/.*/, async (req, res) => {
   try {
-    console.log(req.params.file);
-    const fileContent = fs.readFileSync("test-server/storage/" + req.params.file);
+    const file = filePathFromUR(req.url, "/s3/");
+    const fileContent = fs.readFileSync("test-server/storage/" + file);
     res.setHeader("content-type", "application/octet-stream");
 
     // compress snapshots
-    if (!req.params.file.endsWith("/s/list.json") && req.params.file.endsWith(".json")) {
+    if (!file.endsWith("/s/list.json") && file.endsWith(".json")) {
       const compressedFileContent = await compress(new Blob([fileContent]));
       const buffer = await compressedFileContent.arrayBuffer();
       res.send(encryptBuffer(key, Buffer.from(buffer))).end();
     } else {
       res.send(encryptBuffer(key, fileContent)).end();
     }
-
-
-
   } catch (error) {
     console.error(error);
     res.status(404).send("resource not found").end();
