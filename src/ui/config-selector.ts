@@ -33,8 +33,10 @@ export class ConfigSelector extends LitElement {
       display: flex;
     }
 
-    input[type="file"] {
-      display: none;
+    label:has(input[type="file"]) {
+      input[type="file"] {
+        display: none;
+      }
     }
 
     .input-config {
@@ -72,10 +74,10 @@ export class ConfigSelector extends LitElement {
   // Render the UI as a function of component state
   render() {
     return html`
-    <input type="file" id="file-loader" @change=${this._loadConfigFromFile} accept="application/json" />
-    <label for="file-loader"  class="input-config" @drop=${this._dropHandler}  @dragover=${this._dragOverHandler}>
+    <label class="input-config" @drop=${this._dropHandler}  @dragover=${this._dragOverHandler}>
       <div>Drag &amp; drop or click to choose the config file</div>
       <div>${cloudUploadIcon}</div>
+      <input type="file" id="file-loader" @change=${this._loadConfigFromFile} accept="application/json" />
     </label>
     <div class="or-divider">or</div>
     <div class="input-config" @click=${this._showQrDetectorDialog}>
